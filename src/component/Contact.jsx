@@ -22,18 +22,32 @@ function Contact() {
     setIsSending(true);
     setStatus("");
 
+    const name = form.current.name.value.trim();
+    const email = form.current.email.value.trim();
+    const message = form.current.message.value.trim();
+
     emailjs
-      .sendForm(serviceId, templateId, form.current, {
-        publicKey,
-        from_name: form.current.name.value,
-        reply_to: form.current.email.value,
-      })
+      .send(
+        serviceId,
+        templateId,
+        {
+          name,
+          email,
+          message,
+          from_name: name,
+          reply_to: email,
+        },
+        { publicKey },
+      )
       .then(() => {
         setStatus("Message sent successfully!");
         form.current.reset();
       })
-      .catch(() => {
-        setStatus("Failed to send message. Please try again.");
+      .catch((error) => {
+        console.error("EmailJS error:", error);
+        setStatus(
+          error?.text || "Failed to send message. Please check the EmailJS configuration.",
+        );
       })
       .finally(() => {
         setIsSending(false);
