@@ -15,7 +15,9 @@ function Contact() {
     e.preventDefault();
 
     if (!serviceId || !templateId || !publicKey) {
-      setStatus("EmailJS is not configured yet. Add your keys in the .env file.");
+      setStatus(
+        "EmailJS is not configured. Add the VITE_EMAILJS variables in Vercel Settings, then redeploy.",
+      );
       return;
     }
 
